@@ -24,7 +24,7 @@ function performAction(e) {
 }
 
 const getWeather = async (baseUrl, zipCode, key)=>{
-    const url = `${baseUrl}${zipCode}&appid=${key}`;
+    const url = `${baseUrl}${zipCode}&units=metric&appid=${key}`;
     console.log(url);
     const res = await fetch(url);
     try {
@@ -57,9 +57,9 @@ const updateUI = async ()=>{
         const allData = await request.json();
         console.log('allData:');
         console.log(allData);
-        document.getElementById('date').innerHTML = allData.date;
-        document.getElementById('temp').innerHTML = allData.temp;
-        document.getElementById('content').innerHTML = allData.content;
+        document.getElementById('date').innerHTML = `Date: ${allData.date}`;
+        document.getElementById('temp').innerHTML = `Temperature: ${allData.temp}°C`;
+        document.getElementById('content').innerHTML = `Feelings: ${allData.content}`;
     }
     catch(error) {
         console.log("error", error);
