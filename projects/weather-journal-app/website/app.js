@@ -10,17 +10,20 @@ document.getElementById('generate').addEventListener('click', performAction);
 
 function performAction(e) {
     const zipCode = document.getElementById('zip').value;
+    const feelings = document.getElementById('feelings').value;
     getWeather(baseZipUrl, zipCode, apiKey)
     .then( 
         function(data) {
-            postData('/addData', {date: newDate, temp: data.main.temp, content: 'abc'});
+            postData('/addData', {date: newDate, temp: data.main.temp, content: feelings});
             updateUI();
+        },
+        function(reason) {
+            console.log(reason);
         }
     )
 }
 
 const getWeather = async (baseUrl, zipCode, key)=>{
- //   const res = await fetch('https://api.openweathermap.org/data/2.5/weather?zip=94040,us&appid=3d70271305a4b9c6c98c7b1fbbb5ecbe');
     const url = `${baseUrl}${zipCode}&appid=${key}`;
     console.log(url);
     const res = await fetch(url);
@@ -28,11 +31,12 @@ const getWeather = async (baseUrl, zipCode, key)=>{
         // Transform into JSON
         const data = await res.json();
         console.log(data);
+        if (data.cod != '200')
+            throw data.message;
         return data;
     }
     catch(error) {
-        console.log("error", error);
-        // appropriately handle the error
+        throw(`Cannot get weather data: ${error}`);
     }
 }
 
