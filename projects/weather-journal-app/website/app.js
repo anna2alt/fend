@@ -6,6 +6,7 @@ const apiKey = '3d70271305a4b9c6c98c7b1fbbb5ecbe';
 let d = new Date();
 let newDate = d.getMonth()+'.'+ d.getDate()+'.'+ d.getFullYear();
 
+/* Events */
 document.getElementById('generate').addEventListener('click', performAction);
 
 function performAction(e) {
@@ -13,16 +14,19 @@ function performAction(e) {
     const feelings = document.getElementById('feelings').value;
     getWeather(baseZipUrl, zipCode, apiKey)
     .then( 
+        // api call returned data
         function(data) {
             postData('/addData', {date: newDate, temp: data.main.temp, content: feelings});
             updateUI();
         },
+        // api call returned error
         function(reason) {
             console.log(reason);
         }
     )
 }
 
+/* Async functions */
 const getWeather = async (baseUrl, zipCode, key)=>{
     const url = `${baseUrl}${zipCode}&units=metric&appid=${key}`;
     console.log(url);
@@ -31,6 +35,7 @@ const getWeather = async (baseUrl, zipCode, key)=>{
         // Transform into JSON
         const data = await res.json();
         console.log(data);
+        // throw exception if api returned error
         if (data.cod != '200')
             throw data.message;
         return data;

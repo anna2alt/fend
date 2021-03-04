@@ -27,12 +27,14 @@ function listening() {
     console.log(`Server is running on localhost: ${port}`);
 }
 
+// get route
 app.get('/all', getAll);
 
 function getAll(req, res) {
     res.send(projectData);
 }
 
+//post route
 app.post('/addData', addData);
 
 function addData(req, res) {
